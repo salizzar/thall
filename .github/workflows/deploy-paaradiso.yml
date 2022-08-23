@@ -55,7 +55,7 @@ jobs:
 
       - name: Generate version
         run: |
-          cat <<EOF > website/version.json
+          cat <<EOF > version.json
           {
             "sha": "${{ steps.get-short-sha-and-tag.outputs.sha }}",
             "tag": "${{ steps.get-short-sha-and-tag.outputs.tag }}",
@@ -63,6 +63,8 @@ jobs:
             "branch": "${{ steps.get-current.outputs.branch }}"
           }
           EOF
+        with:
+          context: ./${{ matrix.node }}
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
