@@ -73,8 +73,10 @@ jobs:
       - name: Build Docker image
         uses: docker/setup-buildx-action@v2
         with:
-          context: ./${{ matrix.applications.name }}
+          context: ${{ matrix.applications }}
           file: ./${{ matrix.applications.name }}/Dockerfile
+          build-args:
+            - PLATFORM_ARCHITECTURE=linux
           tags: salizzar/thall-${{ matrix.applications.name }}:latest
 
       - name: Run Snyk to check for Docker vulnerabilities
@@ -88,7 +90,9 @@ jobs:
       - name: Build and push image to DockerHub
         uses: docker/build-push-action@v3
         with:
-          context: ${{ matrix.applications.name }}
+          context: ${{ matrix.applications }}
           file: ./${{ matrix.applications.name }}/Dockerfile
+          build-args:
+            - PLATFORM_ARCHITECTURE=linux
           push: true
           tags: salizzar/thall-${{ matrix.applications.name }}:latest
