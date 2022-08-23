@@ -90,8 +90,8 @@ jobs:
       - name: Build and push image to DockerHub
         uses: docker/build-push-action@v3
         with:
-          context: ${{ matrix.applications }}
-          file: ./${{ matrix.applications.name }}/Dockerfile
-          build-args: ${{ matrix.applications.build-args }}
+          context: ruby
+          file: ./ruby/Dockerfile
+          build-args: '--build-arg RUBY_ARCHITECTURE=linux'
           push: true
-          tags: salizzar/thall-${{ matrix.applications.name }}:latest
+          tags: salizzar/thall-ruby:latest
