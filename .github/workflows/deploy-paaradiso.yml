@@ -55,18 +55,14 @@ jobs:
           echo "::set-output name=name::`echo '${{ steps.build-environment-json.outputs.map }}' | jq -r .environments.${{ steps.get-current.outputs.branch }}`"
 
       - name: Generate version for every container
-        uses: finnp/create-file-action@master
-        env:
-          FILE_NAME: ./${{ matrix.applications.name }}/version.json
-          FILE_DATA: |
-            {
-              "sha": "${{ steps.get-short-sha-and-tag.outputs.sha }}",
-              "tag": "${{ steps.get-short-sha-and-tag.outputs.tag }}",
-              "env": "${{ steps.get-environment.outputs.name }}",
-              "branch": "${{ steps.get-current.outputs.branch }}"
-            }
-        with:
-          context: ./${{ matrix.applications }}
+        run: |
+          cat <<EOF > version.json
+          {
+            "sha": "${{ steps.get-short-sha-and-tag.outputs.sha }}",
+            "tag": "${{ steps.get-short-sha-and-tag.outputs.tag }}",
+            "env": "${{ steps.get-environment.outputs.name }}",
+            "branch": "${{ steps.get-current.outputs.branch }}"
+          }
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -86,11 +82,13 @@ jobs:
         continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.MCP_SNYK_AUTH_TOKEN }}
+        with:
+          context: ${{ matrix.applications }}
 
       - name: Build and push image to DockerHub
         uses: docker/build-push-action@v3
         with:
-          context: ./${{ matrix.applications.name }}
-          file: ./${{ matrix.node }}/Dockerfile
+          context: ${{ matrix.applications.name }}
+          file: ./${{ matrix.applications.name }}/Dockerfile
           push: true
           tags: salizzar/thall-${{ matrix.applications.name }}:latest
