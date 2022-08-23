@@ -64,7 +64,7 @@ jobs:
             "branch": "${{ steps.get-current.outputs.branch }}"
           }
 
-      - name: Use hadolint to sanitize Dockerfile
+      - name: Use hadolint to sanitize Ruby Dockerfile
         run: |
           docker pull hadolint/hadolint
           set -xe
@@ -82,12 +82,6 @@ jobs:
           file: ./ruby/Dockerfile
           buildkitd-flags: '--build-args RUBY_ARCHITECTURE=linux'
           tags: salizzar/thall-ruby:latest
-
-      - name: Run Snyk to check for Docker vulnerabilities
-        env:
-          SNYK_TOKEN: ${{ secrets.MCP_SNYK_AUTH_TOKEN }}
-        run: |
-          snyk scan salizzar/thall-ruby:latest
 
       - name: Build and push image to DockerHub
         uses: docker/build-push-action@v3
