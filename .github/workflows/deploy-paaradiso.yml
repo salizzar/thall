@@ -93,6 +93,6 @@ jobs:
           context: ${{ matrix.applications }}
           file: ./${{ matrix.applications.name }}/Dockerfile
           build-args:
-            - PLATFORM_ARCHITECTURE=linux
+            PLATFORM_ARCHITECTURE: linux
           push: true
           tags: salizzar/thall-${{ matrix.applications.name }}:latest
