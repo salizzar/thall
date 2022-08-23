@@ -65,9 +65,10 @@ jobs:
             "branch": "${{ steps.get-current.outputs.branch }}"
           }
 
-      - name: Use hadolink to sanitize Dockerfile
+      - name: Use hadolint to sanitize Dockerfile
         run: |
-          hadolink ruby/Dockerfile
+          docker pull hadolint/hadolint
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < ruby/Dockerfile
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
