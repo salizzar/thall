@@ -80,7 +80,7 @@ jobs:
       - name: Build Ruby Docker image
         uses: docker/setup-buildx-action@master
         with:
-          context: ruby
+          context: ./ruby
           file: ./ruby/Dockerfile
           buildkitd-flags: '--build-args RUBY_ARCHITECTURE=linux'
           tags: salizzar/thall-ruby:latest
@@ -96,7 +96,7 @@ jobs:
       - name: Build and push image to DockerHub
         uses: docker/build-push-action@v3
         with:
-          context: ruby
+          context: ./ruby
           file: ./ruby/Dockerfile
           push: true
           tags: salizzar/thall-ruby:latest
