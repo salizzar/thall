@@ -68,6 +68,7 @@ jobs:
       - name: Use hadolint to sanitize Dockerfile
         run: |
           docker pull hadolint/hadolint
+          set -xe
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < ruby/Dockerfile
 
       - name: Login to DockerHub
