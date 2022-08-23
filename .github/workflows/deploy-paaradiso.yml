@@ -13,6 +13,7 @@ jobs:
       matrix:
         applications:
           - name: ruby
+            build-flags: --build-arg RUBY_ARCHITECTURE=linux
             test: bundle exec rake test
 
     steps:
@@ -75,8 +76,7 @@ jobs:
         with:
           context: ${{ matrix.applications }}
           file: ./${{ matrix.applications.name }}/Dockerfile
-          buildkitd-flags:
-            worker.oci.platforms: [${{ secrets.PLATFORM_ARCHITECTURE }}]
+          buildkitd-flags: ${{ matrix.applications.build-flogs }}
           tags: salizzar/thall-${{ matrix.applications.name }}:latest
 
       - name: Run Snyk to check for Docker vulnerabilities
@@ -92,7 +92,6 @@ jobs:
         with:
           context: ${{ matrix.applications }}
           file: ./${{ matrix.applications.name }}/Dockerfile
-          build-args:
-            PLATFORM_ARCHITECTURE: ${{ secrets.PLATFORM_ARCHITECTURE }}
+          build-args: ${{ matrix.applications.build-args }}
           push: true
           tags: salizzar/thall-${{ matrix.applications.name }}:latest
