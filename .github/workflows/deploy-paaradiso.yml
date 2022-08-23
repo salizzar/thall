@@ -98,7 +98,6 @@ jobs:
         with:
           context: ruby
           file: ./ruby/Dockerfile
-          build-args: '--build-args RUBY_ARCHITECTURE=linux'
           push: true
           tags: salizzar/thall-ruby:latest
 
