@@ -1,0 +1,100 @@
+name: My Continuous Deployment using GitHub Actions and Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: ci-${{ github.ref }}
+    strategy:
+      matrix:
+        node:
+          - ruby
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: "0"
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.MPC_IAC_SSH_KEY }}
+          known_hosts: ${{ secrets.MPC_IAC_SSH_KNOWN_HOSTS }}
+          config: ${{ secrets.MPC_IAC_SSH_CONFIG }}
+          if_key_exists: replace
+
+      - name: Display current tool's versions
+        run: |
+          echo "aws: `aws --version`"
+          echo "jq: `jq --version`"
+          echo "node: `node --version`"
+          echo "npm: `npm --version`"
+          echo "docker: `docker --version`"
+          echo "ruby: `ruby --version`"
+
+      - name: Get short SHA and tag
+        id: get-short-sha-and-tag
+        run: |
+          echo "::set-output name=sha::`echo ${{ github.sha }} | cut -b 1-7`"
+          echo "::aet-output name=tag::`echo ${{ steps.bump-version.outputs.new_tag }} | awk -F '-' '{ print $1 }'`"
+
+      - name: Build environment map
+        id: build-environment-json
+        run: |
+          echo "::set-output name=map::`echo '{\"environments\":{\"main\":\"production\",\"dev\":\"development\"}}'`"
+
+      - name: Get environment json map
+        run: |
+          echo "${{ steps.build-environment-json.outputs.map }}"
+
+      - name: Get environment branch
+        id: get-current
+        run: |
+          echo "::set-output name=branch::${{github.ref_name}}"
+
+      - name: Get environment name based on map
+        id: get-environment
+        run: |
+          echo "::set-output name=name::`echo '${{ steps.build-environment-json.outputs.map }}' | jq -r .environments.${{ steps.get-current.outputs.branch }}`"
+
+      - name: Generate version
+        run: |
+          cat <<EOF > website/version.json
+          {
+            "sha": "${{ steps.get-short-sha-and-tag.outputs.sha }}",
+            "tag": "${{ steps.get-short-sha-and-tag.outputs.tag }}",
+            "env": "${{ steps.get-environment.outputs.name }}",
+            "branch": "${{ steps.get-current.outputs.branch }}"
+          }
+          EOF
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.MPC_DOCKER_USERNAME }}
+          password: ${{ secrets.MPC_DOCKER_PERSONAL_TOKEN }}
+
+      - name: Build Docker image
+        uses: docker/setup-buildx-action@v2
+        with:
+          context: ${{ matrix.node }}
+          file: ./${{ matrix.node }}/Dockerfile
+          tags: salizzar/thall-${{ matrix.node }}:latest
+
+      - name: Run Snyk to check for Docker vulnerabilities
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.MCP_SNYK_AUTH_TOKEN }}
+
+      - name: Build and push image to DockerHub
+        uses: docker/build-push-action@v3
+        with:
+          context: ./${{ matrix.node }}
+          file: ./${{ matrix.node }}/Dockerfile
+          push: true
+          tags: salizzar/thall-${{ matrix.node }}:latest
