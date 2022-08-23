@@ -76,7 +76,7 @@ jobs:
           context: ${{ matrix.applications }}
           file: ./${{ matrix.applications.name }}/Dockerfile
           build-args:
-            PLATFORM_ARCHITECTURE: ${{ secrets.PLATFORM_ARCHITECTURE }}
+            - PLATFORM_ARCHITECTURE: ${{ secrets.PLATFORM_ARCHITECTURE }}
           tags: salizzar/thall-${{ matrix.applications.name }}:latest
 
       - name: Run Snyk to check for Docker vulnerabilities
@@ -93,6 +93,6 @@ jobs:
           context: ${{ matrix.applications }}
           file: ./${{ matrix.applications.name }}/Dockerfile
           build-args:
-            PLATFORM_ARCHITECTURE: ${{ secrets.PLATFORM_ARCHITECTURE }}
+            - PLATFORM_ARCHITECTURE: ${{ secrets.PLATFORM_ARCHITECTURE }}
           push: true
           tags: salizzar/thall-${{ matrix.applications.name }}:latest
