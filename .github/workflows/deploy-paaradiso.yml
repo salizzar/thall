@@ -82,7 +82,7 @@ jobs:
         with:
           context: ruby
           file: ./ruby/Dockerfile
-          buildkitd-flags: '--build-arg RUBY_ARCHITECTURE=linux'
+          buildkitd-flags: '--build-args RUBY_ARCHITECTURE=linux'
           tags: salizzar/thall-ruby:latest
 
       - name: Run Snyk to check for Docker vulnerabilities
@@ -98,7 +98,7 @@ jobs:
         with:
           context: ruby
           file: ./ruby/Dockerfile
-          build-args: '--build-arg RUBY_ARCHITECTURE=linux'
+          build-args: '--build-args RUBY_ARCHITECTURE=linux'
           push: true
           tags: salizzar/thall-ruby:latest
 
