@@ -84,12 +84,10 @@ jobs:
           tags: salizzar/thall-ruby:latest
 
       - name: Run Snyk to check for Docker vulnerabilities
-        uses: snyk/actions/node@master
-        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.MCP_SNYK_AUTH_TOKEN }}
-        with:
-          context: ${{ matrix.applications }}
+        run: |
+          snyk scan salizzar/thall-ruby:latest
 
       - name: Build and push image to DockerHub
         uses: docker/build-push-action@v3
