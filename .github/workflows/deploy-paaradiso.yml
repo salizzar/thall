@@ -73,7 +73,7 @@ jobs:
       - name: Run Snyk to check for Docker vulnerabilities
         uses: snyk/actions/ruby@master
         env:
-          SNYK_TOKEN: ${{ secrets.MCP_SNYK_AUTH_TOKEN }}
+          SNYK_TOKEN: ${{ secrets.MPC_SNYK_AUTH_TOKEN }}
         with:
           args: --target-dir ./ruby
 
