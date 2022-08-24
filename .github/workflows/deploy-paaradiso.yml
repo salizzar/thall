@@ -67,7 +67,7 @@ jobs:
           }
           cp version.json ruby/app python/app
 
-      - name: Use hadolint to sanitize Ruby Dockerfile
+      - name: Use hadolint to sanitize Dockerfiles
         run: |
           docker pull hadolint/hadolint
           set -xe
@@ -77,6 +77,8 @@ jobs:
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < python/Dockerfile
           echo "Checking Golang..."
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < golang/Dockerfile
+          echo "Checking Node.js..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < nodejs/Dockerfile
 
 #     - name: Run Snyk to check for Docker vulnerabilities
 #       uses: snyk/actions/ruby@master
