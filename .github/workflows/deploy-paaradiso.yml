@@ -70,6 +70,13 @@ jobs:
           set -xe
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < ruby/Dockerfile
 
+      - name: Run Snyk to check for Docker vulnerabilities
+        uses: snyk/actions/ruby@master
+        args:
+          target-dir: ./ruby
+        env:
+          SNYK_TOKEN: ${{ secrets.MCP_SNYK_AUTH_TOKEN }}
+
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
