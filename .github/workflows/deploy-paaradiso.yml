@@ -68,9 +68,7 @@ jobs:
         run: |
           docker pull hadolint/hadolint
           set -xe
-          docker container run --rm -i hadolint/hadolint hadolint "$@" - < ${{ matrix.applications.name }}/Dockerfile
-        with:
-          context: ${{ matrix.applications }}
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < ruby/Dockerfile
 
       - name: Run Snyk to check for Docker vulnerabilities
         uses: snyk/actions/ruby@master
