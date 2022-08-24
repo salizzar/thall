@@ -1,4 +1,4 @@
-# thall
+# THALL
 
 Welcome to *Måsstaden under vatten* repository with code samples.
 
