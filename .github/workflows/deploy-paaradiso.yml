@@ -83,6 +83,8 @@ jobs:
 
       - name: Run Snyk to check vulnerabilities in all projects
         run: |
+          echo "Authenticating into snyk..."
+          snyk auth
           echo "Checking Ruby..."
           snyk test --target-dir ruby
           echo "Checking Python..."
