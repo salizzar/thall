@@ -95,7 +95,7 @@ jobs:
           build-contexts: |
             project=./ruby .
           tags: |
-            name: ${{ secrets.MPC_DOCKER_USERNAME }}/thall-ruby:latest
+            name: salizzar/thall-ruby:latest
           push: true
 
       - name: Build and push Python image to DockerHub
@@ -104,6 +104,6 @@ jobs:
           build-contexts: |
             --build-context name=./python .
           tags: |
-            name: ${{ secrets.MPC_DOCKER_USERNAME }}/thall-python:latest
+            name: salizzar/thall-python:latest
           push: true
 
