@@ -6,6 +6,7 @@ WORKDIR /app
 
 COPY app /app
 
-RUN yarn install
+RUN yarn install && \
+    yarn cache clean
 
 CMD ["node", "main.js"]
