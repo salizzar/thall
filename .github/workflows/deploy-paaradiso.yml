@@ -68,7 +68,10 @@ jobs:
         run: |
           docker pull hadolint/hadolint
           set -xe
+          echo "Checking Ruby..."
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < ruby/Dockerfile
+          echo "Checking Python..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < python/Dockerfile
 
 #     - name: Run Snyk to check for Docker vulnerabilities
 #       uses: snyk/actions/ruby@master
@@ -90,6 +93,13 @@ jobs:
           buildkitd-flags: --build-args RUBY_ARCHITECTURE=linux
           tags: salizzar/thall-ruby:latest
 
+      - name: Build Python Docker image
+        uses: docker/setup-buildx-action@master
+        with:
+          file: ./python/Dockerfile
+          buildkitd-flags: --build-args RUBY_ARCHITECTURE=linux
+          tags: salizzar/thall-python:latest
+
       - name: Build and push image to DockerHub
         uses: docker/build-push-action@v3
         with:
@@ -97,4 +107,13 @@ jobs:
           file: ./ruby/Dockerfile
           push: true
           tags: salizzar/thall-ruby:latest
+
+      - name: Build and push Python image to DockerHub
+        uses: docker/build-push-action@v3
+        with:
+          context: ./python
+          file: ./python/Dockerfile
+          push: true
+          tags: salizzar/thall-python:latest
+
 
