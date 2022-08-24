@@ -102,16 +102,14 @@ jobs:
       - name: Build and push Ruby image to DockerHub
         uses: docker/build-push-action@v3
         with:
-          context: ./ruby
+          buildkitd-flags: |
+            --build-context name=./ruby --build-args RUBY_ARCHITECTURE=linux --tag name:salizzar/thall-ruby:latest
           push: true
-          tags: |
-            salizzar/thall-ruby:latest
 
       - name: Build and push Python image to DockerHub
         uses: docker/build-push-action@v3
         with:
-          context: ./python
+          buildkitd-flags: |
+            --build-context name=./python --tag name=salizzar/thall-python:latest
           push: true
-          tags: |
-            salizzar/thall-python:latest
 
