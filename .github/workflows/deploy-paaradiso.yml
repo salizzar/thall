@@ -90,14 +90,12 @@ jobs:
       - name: Build Ruby Docker image
         uses: docker/setup-buildx-action@master
         with:
-          file: ./ruby/Dockerfile
           buildkitd-flags: --build-args RUBY_ARCHITECTURE=linux
           tags: salizzar/thall-ruby:latest
 
       - name: Build Python Docker image
         uses: docker/setup-buildx-action@master
         with:
-          file: ./python/Dockerfile
           buildkitd-flags: --build-args RUBY_ARCHITECTURE=linux
           tags: salizzar/thall-python:latest
 
