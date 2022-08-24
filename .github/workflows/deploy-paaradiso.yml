@@ -28,6 +28,8 @@ jobs:
           echo "npm: `npm --version`"
           echo "docker: `docker --version`"
           echo "ruby: `ruby --version`"
+          echo "python: `python --version`"
+          echo "golang: `go version`"
 
       - name: Get short SHA and tag
         id: get-short-sha-and-tag
@@ -73,6 +75,8 @@ jobs:
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < ruby/Dockerfile
           echo "Checking Python..."
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < python/Dockerfile
+          echo "Checking Golang..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < golang/Dockerfile
 
 #     - name: Run Snyk to check for Docker vulnerabilities
 #       uses: snyk/actions/ruby@master
@@ -101,5 +105,19 @@ jobs:
         with:
           context: ./python
           tags: salizzar/thall-python:latest
+          push: true
+
+      - name: Build and push Golang image to DockerHub
+        uses: docker/build-push-action@v3
+        with:
+          context: ./golang
+          tags: salizzar/thall-golang:latest
+          push: true
+
+      - name: Build and push Node.js image to DockerHub
+        uses: docker/build-push-action@v3
+        with:
+          context: ./nodejs
+          tags: salizzar/thall-nodejs:latest
           push: true
 
