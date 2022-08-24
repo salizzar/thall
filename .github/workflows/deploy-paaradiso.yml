@@ -87,7 +87,7 @@ jobs:
         uses: docker/setup-buildx-action@master
         with:
           file: ./ruby/Dockerfile
-          buildkitd-arg: '--build-args RUBY_ARCHITECTURE=linux'
+          buildkitd-arg: --build-args RUBY_ARCHITECTURE=linux
           tags: salizzar/thall-ruby:latest
 
       - name: Build and push image to DockerHub
