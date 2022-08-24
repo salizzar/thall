@@ -99,19 +99,19 @@ jobs:
           buildkitd-flags: |
             --build-context name=./python --tag name=salizzar/thall-python:latest
 
-      - name: Build and push image to DockerHub
+      - name: Build and push Ruby image to DockerHub
         uses: docker/build-push-action@v3
         with:
           context: ./ruby
-          file: ./ruby/Dockerfile
           push: true
-          tags: salizzar/thall-ruby:latest
+          tags: |
+            salizzar/thall-ruby:latest
 
       - name: Build and push Python image to DockerHub
         uses: docker/build-push-action@v3
         with:
           context: ./python
-          file: ./python/Dockerfile
           push: true
-          tags: salizzar/thall-python:latest
+          tags: |
+            salizzar/thall-python:latest
 
