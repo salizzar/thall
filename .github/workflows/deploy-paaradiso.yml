@@ -63,6 +63,7 @@ jobs:
             "env": "${{ steps.get-environment.outputs.name }}",
             "branch": "${{ steps.get-current.outputs.branch }}"
           }
+          cp version.json ruby/ python/
 
       - name: Use hadolint to sanitize Ruby Dockerfile
         run: |
