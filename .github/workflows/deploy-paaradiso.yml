@@ -103,7 +103,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           build-args: |
-						RUBY_ARCHITECTURE=linux
+            RUBY_ARCHITECTURE=linux
           build-contexts: |
             name=./ruby
           tags: |
