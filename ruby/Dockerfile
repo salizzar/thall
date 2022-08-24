@@ -1,7 +1,7 @@
 FROM ruby:3.1.2-alpine
 
 ARG RUBY_ARCHITECTURE=aarch64-linux-musl
-EXPOSE 9293
+EXPOSE 8000
 
 WORKDIR /app
 
@@ -17,4 +17,4 @@ RUN apk add build-base=0.5-r3 --no-cache && \
     apk del build-base && \
     rm -rf /var/cache/apk/*
 
-CMD ["bundle", "exec", "puma", "--environment", "production", "--port", "9293", "--log-requests", "./app/cuba.rb"]
+CMD ["bundle", "exec", "puma", "--environment", "production", "--port", "8000", "--log-requests", "./app/cuba.rb"]
