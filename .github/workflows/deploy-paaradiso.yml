@@ -63,7 +63,7 @@ jobs:
             "env": "${{ steps.get-environment.outputs.name }}",
             "branch": "${{ steps.get-current.outputs.branch }}"
           }
-          cp version.json ruby/ python/
+          cp version.json ruby/app python/app
 
       - name: Use hadolint to sanitize Ruby Dockerfile
         run: |
@@ -116,5 +116,4 @@ jobs:
           file: ./python/Dockerfile
           push: true
           tags: salizzar/thall-python:latest
-
 
