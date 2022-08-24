@@ -90,13 +90,15 @@ jobs:
       - name: Build Ruby Docker image
         uses: docker/setup-buildx-action@master
         with:
-          buildkitd-flags: --build-context name=./ruby --build-args RUBY_ARCHITECTURE=linux
+          buildkitd-flags: |
+            --build-context name=./ruby --build-args RUBY_ARCHITECTURE=linux
           tags: salizzar/thall-ruby:latest
 
       - name: Build Python Docker image
         uses: docker/setup-buildx-action@master
         with:
-          buildkitd-flags: --build-context name=./python
+          buildkitd-flags: |
+            --build-context name=./python
           tags: salizzar/thall-python:latest
 
       - name: Build and push image to DockerHub
