@@ -1,4 +1,4 @@
-name: Build and Push all applications to DockerHub
+name: THALL - Build and Push all applications to DockerHub
 
 on:
   push:
