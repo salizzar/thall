@@ -82,6 +82,8 @@ jobs:
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < nodejs/Dockerfile
 
       - name: Run Snyk to check vulnerabilities in all projects
+        env:
+          SYNC_AUTH: ${{ secrets.SNYK_TOKEN }}
         run: |
           echo "Authenticating into snyk..."
           snyk auth
