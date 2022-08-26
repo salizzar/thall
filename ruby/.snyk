@@ -1,0 +1,5 @@
+version: v1.19.0
+ignore:
+  SNYK-RUBY-RACK-1061917:
+    - 'cuba@3.9.3':
+        reason: patch fixed at Rack gem but not merged into master
