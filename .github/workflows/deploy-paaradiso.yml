@@ -86,7 +86,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
           echo "Authenticating into snyk..."
-          snyk auth
+          snyk auth ${SNYK_TOKEN}
           echo "Checking Ruby..."
           snyk test --target-dir ruby
           echo "Checking Python..."
