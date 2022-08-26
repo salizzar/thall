@@ -2,8 +2,6 @@ package main
 
 import (
 	"net/http"
-
-	"fmt"
 	"strconv"
 	"strings"
 
@@ -12,6 +10,7 @@ import (
 
 func main() {
 	r := gin.Default()
+	r.LoadHTMLGlob("templates/*.tmpl")
 
 	r.GET("/", func(c *gin.Context) {
 		c.Redirect(http.StatusMovedPermanently, "/hello")
@@ -28,22 +27,15 @@ func main() {
 		host := host_with_port[0]
 		port := host_with_port[1]
 
-		c.HTML(http.StatusOK, "raw.tmpl", gin.H{
-			"scheme": scheme,
-			"host":   host,
-			"port":   port,
-		})
-
-		c.HTML(http.StatusOK, "hehe", gin.H{})
+		c.HTML(http.StatusOK, "main.tmpl", gin.H{"scheme": scheme, "host": host, "port": port})
 	})
 
 	r.POST("/fibonacci", func(c *gin.Context) {
-		number, err := strconv.Atoi([]string(c.Request.PostForm["number"])[0])
+		number, err := strconv.Atoi(c.PostForm("number"))
 		if err != nil {
-			c.HTML(http.StatusBadRequest, "C'mon dude, take it easy.", gin.H{})
+			c.JSON(http.StatusBadRequest, "C'mon dude, take it easy.")
+			panic(err)
 		}
-
-		fmt.Printf("aqui: %s", number)
 
 		result := FibonacciGenerator(number)
 
