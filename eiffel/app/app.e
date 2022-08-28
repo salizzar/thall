@@ -18,7 +18,7 @@ create
 feature {NONE}
 	initialize
 		do
- 			set_service_option ("port", 8000)
+ 			set_service_option ("port", 9000)
 			import_service_options (create {WSF_SERVICE_LAUNCHER_OPTIONS_FROM_INI}.make_from_file ("main.ini"))
 		end
 end

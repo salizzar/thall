@@ -15,7 +15,18 @@ ADD app.ecf /app
 
 USER root
 RUN apt-get update && \
-    apt-get install -y git
+    apt-get install -y git fcgiwrap nginx && \
+    groupadd --system nginx && \
+    adduser --system --disabled-password --no-create-home nginx && \
+    usermod --group nginx nginx && \
+    mkdir -p /var/lib/nginx /var/log/nginx && \
+    touch /var/run/nginx.pid && \
+    chown -R nginx:nginx /var/lib/nginx /var/log/nginx /var/run/nginx.pid
+
+
+ADD etc/nginx/conf.d/fcgiwrap.conf /etc/nginx/conf.d
+ADD etc/init.d/fcgiwrap /etc/init.d
+ADD etc/nginx/nginx.conf /etc/nginx
 
 
 USER eiffel
@@ -28,8 +39,10 @@ RUN git clone https://github.com/EiffelWebFramework/EWF.git ${ISE_LIBRARY_PROJEC
 
 
 RUN cd /app/EIFGENs/app/W_code && finish_freezing && \
-    mkdir /app/bin && cp app /app/bin
+    mkdir /app/bin && cp app /app/bin && \
+    chmod 744 /app/bin
 
 
-CMD ["/app/bin/app"]
+USER nginx
+CMD ["nginx", "-g", "daemon off;"]
 
