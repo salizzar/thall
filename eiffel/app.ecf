@@ -12,10 +12,8 @@
 	</target>
 	<target name="app" extends="common">
 		<root class="APP" feature="make_and_launch"/>
-		<option warning="true">
-			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
-		</option>
-		<library name="default_cgi" location="$ISE_LIBRARY_PROJECTS/EWF/library/server/wsf/default/cgi.ecf"/>
-		<cluster name="main" location="." recursive="true"/>
+		<library name="wsf_libfcgi" location="$ISE_LIBRARY_PROJECTS/EWF/library/server/wsf/connector/libfcgi.ecf"/>
+		<cluster name="launcher" location="app/launcher" recursive="true"/>
+		<cluster name="app" location="app/web" recursive="true"/>
 	</target>
 </system>

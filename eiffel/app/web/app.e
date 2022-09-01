@@ -4,10 +4,12 @@ note
 	revision    : "$Revision$"
 
 class
-	APP
+        APP
 
 inherit
-	WSF_DEFAULT_SERVICE [APP_EXECUTION]
+	APP_LAUNCHER [APP_EXECUTION]
+
+	WSF_LAUNCHABLE_SERVICE
 		redefine
 			initialize
 		end
@@ -18,6 +20,7 @@ create
 feature {NONE}
 	initialize
 		do
+			Precursor
  			set_service_option ("port", 9000)
 			import_service_options (create {WSF_SERVICE_LAUNCHER_OPTIONS_FROM_INI}.make_from_file ("main.ini"))
 		end

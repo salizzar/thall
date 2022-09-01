@@ -1,0 +1,43 @@
+#!/bin/bash
+
+BIND=0.0.0.09000
+USER=eiffel
+EIFFEL_FCGI_CHILDREN=15
+EIFFEL_FCGI_MAX_REQUESTS=1000
+
+EIFFEL_CGI=/app/bin/app
+EIFFEL_CGI_NAME=`basename $EIFFEL_CGI`
+EIFFEL_CGI_ARGS="- USER=$USER PATH=/app/bin/app EIFFEL_FCGI_CHILDREN=$EIFFEL_FCGI_CHILDREN EIFFEL_FCGI_MAX_REQUESTS=$EIFFEL_FCGI_MAX_REQUESTS $EIFFEL_CGI -b $BIND"
+RETVAL=0
+
+start() {
+      echo -n "Starting PHP FastCGI: "
+      start-stop-daemon --quiet --start --background --chuid "$USER" --exec /usr/bin/env -- $EIFFEL_CGI_ARGS
+      RETVAL=$?
+      echo "$EIFFEL_CGI_NAME."
+}
+
+stop() {
+      echo -n "Stopping PHP FastCGI: "
+      killall -q -w -u $USER $EIFFEL_CGI
+      RETVAL=$?
+      echo "$EIFFEL_CGI_NAME."
+}
+
+case "$1" in
+    start)
+      start
+  ;;
+    stop)
+      stop
+  ;;
+    restart)
+      stop
+      start
+  ;;
+    *)
+      echo "Usage: app {start|stop|restart}"
+      exit 1
+  ;;
+esac
+exit $RETVAL

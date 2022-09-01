@@ -1,0 +1,6 @@
+#! /usr/bin/env bash
+
+set -xe
+
+service nginx start
+service app start
