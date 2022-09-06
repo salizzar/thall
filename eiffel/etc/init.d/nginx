@@ -1,25 +1,31 @@
 #!/bin/bash
 
-APP_USER=nginx
-APP_NAME=nginx
-APP_BIN=/usr/sbin/${APP_NAME}
-APP_PID=/var/run/${APP_NAME}.pid
+NGINX_USER=nginx
+NGINX_NAME=nginx
+NGINX_BIN=/usr/sbin/${NGINX_NAME}
+NGINX_PID=/var/run/${NGINX_NAME}.pid
 RETVAL=0
 
 start() {
-	echo -n "Starting ${APP_NAME} application: "
-	start-stop-daemon --quiet --start --background \
-		--user $APP_USER \
-		--name $APP_NAME \
-		--exec $APP_BIN \
-		--pidfile $APP_PID
+	echo -n "Starting ${NGINX_NAME} application: "
+	start-stop-daemon \
+		--start \
+		--user ${NGINX_USER} \
+		--name ${NGINX_NAME} \
+		--exec ${NGINX_BIN} \
+		--pidfile ${NGINX_PID}
 	RETVAL=$?
 	echo "started."
 }
 
 stop() {
-	echo -n "Stopping ${APP_NAME} application: "
-	killall -q -w -u $APP_USER $APP_BIN
+	echo -n "Stopping ${NGINX_NAME} application: "
+	start-stop-daemon \
+		--stop \
+		--user ${NGINX_USER} \
+		--name ${NGINX_NAME} \
+		--exec ${NGINX_BIN} \
+		--pidfile ${NGINX_PID}
 	RETVAL=$?
 	echo "stopped."
 }
@@ -36,8 +42,8 @@ case "$1" in
 		start
 	;;
 	*)
-	echo "Usage: ${APP_NAME} {start|stop|restart}"
+	echo "Usage: ${NGINX_NAME} {start|stop|restart}"
 	exit 1
 	;;
 esac
-exit $RETVAL
+exit ${RETVAL}

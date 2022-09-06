@@ -1,43 +1,53 @@
 #!/bin/bash
 
-BIND=0.0.0.09000
-USER=eiffel
-EIFFEL_FCGI_CHILDREN=15
-EIFFEL_FCGI_MAX_REQUESTS=1000
+APP_NAME=Eiffel
+EIFFEL_USER=eiffel
 
-EIFFEL_CGI=/app/bin/app
-EIFFEL_CGI_NAME=`basename $EIFFEL_CGI`
-EIFFEL_CGI_ARGS="- USER=$USER PATH=/app/bin/app EIFFEL_FCGI_CHILDREN=$EIFFEL_FCGI_CHILDREN EIFFEL_FCGI_MAX_REQUESTS=$EIFFEL_FCGI_MAX_REQUESTS $EIFFEL_CGI -b $BIND"
+FASTCGI_BIN=/app/bin/app.fcgi
+FASTCGI_BIND=0.0.0.0:9000
+FASTCGI_ARGS="- ${FASTCGI_BIN} -b ${FASTCGI_BIND}"
 RETVAL=0
 
 start() {
-      echo -n "Starting PHP FastCGI: "
-      start-stop-daemon --quiet --start --background --chuid "$USER" --exec /usr/bin/env -- $EIFFEL_CGI_ARGS
-      RETVAL=$?
-      echo "$EIFFEL_CGI_NAME."
+	echo -n "Starting ${APP_NAME} FastCGI: "
+	start-stop-daemon \
+		--start \
+		--background \
+		--user ${EIFFEL_USER} \
+		--output /dev/stdout \
+		--exec /usr/bin/env -- \
+		${FASTCGI_ARGS}
+	RETVAL=$?
+	echo "started."
 }
 
 stop() {
-      echo -n "Stopping PHP FastCGI: "
-      killall -q -w -u $USER $EIFFEL_CGI
-      RETVAL=$?
-      echo "$EIFFEL_CGI_NAME."
+	echo -n "Stopping ${APP_NAME} FastCGI: "
+	echo -n "Stopping ${APP_NAME} application: "
+	start-stop-daemon \
+		--stop \
+		--user ${APP_USER} \
+		--name ${APP_NAME} \
+		--exec ${APP_BIN} \
+		--pidfile ${APP_PID}
+	RETVAL=$?
+	echo "stoped."
 }
 
 case "$1" in
-    start)
-      start
-  ;;
-    stop)
-      stop
-  ;;
-    restart)
-      stop
-      start
-  ;;
-    *)
-      echo "Usage: app {start|stop|restart}"
-      exit 1
-  ;;
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+		restart)
+		stop
+		start
+	;;
+	*)
+	echo "Usage: app {start|stop|restart}"
+	exit 1
+	;;
 esac
-exit $RETVAL
+exit ${RETVAL}

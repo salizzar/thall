@@ -62,7 +62,8 @@ curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm
 			body.replace_substring_all("{port}", port.out)
 
 			response.set_status_code ({HTTP_STATUS_CODE}.ok)
-			html.set_body(body)
+			html.header.put_content_type_text_html
+			html.set_body (body)
 
 			Result := html
 		end
@@ -93,6 +94,8 @@ curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm
 
 			create conv.make
 			create html.make
+
+			html.header.put_content_type_application_json
 			html.set_body(conv.to_json_string(payload))
 
 			Result := html
@@ -105,6 +108,7 @@ curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm
 			create html.make
 
 			response.set_status_code ({HTTP_STATUS_CODE}.bad_request)
+			html.header.put_content_type_text_html
 			html.set_body ("C'mon dude, take it easy.")
 
 			Result := html

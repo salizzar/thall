@@ -5,15 +5,13 @@ EXPOSE 8000
 
 
 # deb packages
-ENV REQUIRED_PACKAGES="git nginx fcgiwrap"
+ENV REQUIRED_PACKAGES="vim tmux git nginx fcgiwrap"
 ENV DEV_REQUIRED_PACKAGES="build-essential libfcgi-dev openrc net-tools htop procps"
 
 
 # use root to install / create / setup all required stuff
 USER root
-ADD usr/bin/start /usr/bin/
-RUN  chmod +x /usr/bin/start && \
-     apt-get update && \
+RUN  apt-get update && \
      apt-get install -y ${REQUIRED_PACKAGES} ${DEV_REQUIRED_PACKAGES} && \
      groupadd --system nginx && \
      adduser --system --disabled-password --no-create-home nginx && \
@@ -50,11 +48,14 @@ COPY etc/nginx/conf.d /etc/nginx/conf.d
 ADD etc/nginx/nginx.conf /etc/nginx/
 ADD etc/init.d/nginx /etc/init.d/nginx
 ADD etc/init.d/app /etc/init.d/app
+ADD usr/bin/start /usr/bin/
 
-RUN apt-get remove --yes ${DEV_PACKAGES} && \
+RUN apt-get remove -y ${DEV_REQUIRED_PACKAGES} && \
     apt-get autoremove --purge --yes && \
     apt-get autoclean --yes && \
-    unset REQUIRED_PACKAGES DEV_REQUIRED_PACKAGES
+    unset REQUIRED_PACKAGES DEV_REQUIRED_PACKAGES && \
+    chown root:root /etc/init.d/app /etc/init.d/nginx /usr/bin/start && \
+    chmod +x /etc/init.d/app /etc/init.d/nginx /usr/bin/start
 
 
 CMD ["/usr/bin/start"]
