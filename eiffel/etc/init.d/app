@@ -4,34 +4,36 @@ APP_NAME=Eiffel
 EIFFEL_USER=eiffel
 
 FASTCGI_BIN=/app/bin/app.fcgi
-FASTCGI_BIND=0.0.0.0:9000
-FASTCGI_ARGS="- ${FASTCGI_BIN} -b ${FASTCGI_BIND}"
+FASTCGI_PID=/var/run/app.pid
+FASTCGI_LOG=/var/log/app.log
+FASTCGI_BIND=tcp:0.0.0.0:9000
+FASTCGI_ARGS="-f -c 1 -s ${FASTCGI_BIND} -p ${FASTCGI_BIN}"
 RETVAL=0
 
 start() {
-	echo -n "Starting ${APP_NAME} FastCGI: "
+	echo -n "Starting FastCGI ${APP_NAME}: "
 	start-stop-daemon \
 		--start \
 		--background \
 		--user ${EIFFEL_USER} \
-		--output /dev/stdout \
-		--exec /usr/bin/env -- \
+		--make-pidfile \
+		--pidfile ${FASTCGI_PID} \
+		--output ${FASTCGI_LOG} \
+		--exec /usr/sbin/fcgiwrap -- \
 		${FASTCGI_ARGS}
 	RETVAL=$?
 	echo "started."
 }
 
 stop() {
-	echo -n "Stopping ${APP_NAME} FastCGI: "
-	echo -n "Stopping ${APP_NAME} application: "
+	echo -n "Stopping FastCGI ${APP_NAME}: "
 	start-stop-daemon \
 		--stop \
-		--user ${APP_USER} \
-		--name ${APP_NAME} \
-		--exec ${APP_BIN} \
-		--pidfile ${APP_PID}
+		--user ${EIFFEL_USER} \
+		--remove-pidfile \
+		--pidfile ${FASTCGI_PID}
 	RETVAL=$?
-	echo "stoped."
+	echo "stopped."
 }
 
 case "$1" in

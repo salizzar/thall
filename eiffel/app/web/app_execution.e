@@ -17,7 +17,6 @@ feature
 		local
 			res: WSF_RESPONSE_MESSAGE
  		do
-
 			-- handle all requests here
 			if request.path_info.same_string ("/") then
 				res := hello
@@ -44,6 +43,8 @@ feature
 			body : string
 			html : WSF_HTML_PAGE_RESPONSE
 		do
+			print ("Processing index...")
+
 			create html.make
 
 			protocol := "http"
@@ -77,6 +78,7 @@ curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm
 			payload : JSON_OBJECT
 			conv: JSON_BASIC_SERIALIZATION
 			html : WSF_HTML_PAGE_RESPONSE
+
 		do
 			number_from_post := request.form_parameter ("number")
 			if attached {INTEGER} number_from_post as n then

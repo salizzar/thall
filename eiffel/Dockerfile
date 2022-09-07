@@ -55,7 +55,8 @@ RUN apt-get remove -y ${DEV_REQUIRED_PACKAGES} && \
     apt-get autoclean --yes && \
     unset REQUIRED_PACKAGES DEV_REQUIRED_PACKAGES && \
     chown root:root /etc/init.d/app /etc/init.d/nginx /usr/bin/start && \
-    chmod +x /etc/init.d/app /etc/init.d/nginx /usr/bin/start
+    chmod +x /etc/init.d/app /etc/init.d/nginx /usr/bin/start && \
+    touch /var/log/app.log && chown eiffel:eiffel /var/log/app.log
 
 
 CMD ["/usr/bin/start"]

@@ -7,7 +7,7 @@ NGINX_PID=/var/run/${NGINX_NAME}.pid
 RETVAL=0
 
 start() {
-	echo -n "Starting ${NGINX_NAME} application: "
+	echo "Starting ${NGINX_NAME} application: "
 	start-stop-daemon \
 		--start \
 		--user ${NGINX_USER} \
@@ -15,7 +15,6 @@ start() {
 		--exec ${NGINX_BIN} \
 		--pidfile ${NGINX_PID}
 	RETVAL=$?
-	echo "started."
 }
 
 stop() {
