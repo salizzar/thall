@@ -44,10 +44,10 @@ RUN git clone https://github.com/EiffelWebFramework/EWF.git ${ISE_LIBRARY_PROJEC
 # came back to root to add / remove all unnecessary stuff
 USER root
 
-COPY etc/nginx/conf.d /etc/nginx/conf.d
+ADD etc/nginx/conf.d/app.conf /etc/nginx/conf.d/
 ADD etc/nginx/nginx.conf /etc/nginx/
-ADD etc/init.d/nginx /etc/init.d/nginx
-ADD etc/init.d/app /etc/init.d/app
+ADD etc/init.d/nginx /etc/init.d/
+ADD etc/init.d/app /etc/init.d/
 ADD usr/bin/start /usr/bin/
 
 RUN apt-get remove -y ${DEV_REQUIRED_PACKAGES} && \

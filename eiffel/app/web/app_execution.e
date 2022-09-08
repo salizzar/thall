@@ -16,7 +16,13 @@ feature
 	execute
 		local
 			res: WSF_RESPONSE_MESSAGE
+			msg: STRING
+
  		do
+			-- debug
+			msg := "Processing request [{request}]...%N"
+			msg.replace_substring_all ("{request}", request.utf_8_path_info)
+
 			-- handle all requests here
 			if request.path_info.same_string ("/") then
 				res := hello
@@ -32,6 +38,10 @@ feature
 				res := cmon_dude
 			end
 
+			-- debug
+			-- response.set_status_code({HTTP_STATUS_CODE}.ok)
+			-- response.put_string (msg)
+
 			response.send (res)
 		end
 
@@ -42,8 +52,9 @@ feature
 			port : INTEGER
 			body : string
 			html : WSF_HTML_PAGE_RESPONSE
+
 		do
-			print ("Processing index...")
+			Io.put_string ("Processing index...%N")
 
 			create html.make
 
@@ -80,6 +91,8 @@ curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm
 			html : WSF_HTML_PAGE_RESPONSE
 
 		do
+			Io.put_string ("Processing fibonacci...%N")
+
 			number_from_post := request.form_parameter ("number")
 			if attached {INTEGER} number_from_post as n then
 				number := n
@@ -106,6 +119,7 @@ curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm
 	cmon_dude: WSF_HTML_PAGE_RESPONSE
 		local
 			html : WSF_HTML_PAGE_RESPONSE
+
 		do
 			create html.make
 
