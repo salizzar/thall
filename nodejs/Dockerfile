@@ -1,4 +1,4 @@
-FROM node:18.7.0-alpine
+FROM node:current-alpine3.16
 
 EXPOSE 8000
 
