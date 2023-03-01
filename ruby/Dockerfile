@@ -5,9 +5,7 @@ EXPOSE 8000
 
 WORKDIR /app
 
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
-COPY app /app/app
+COPY app /app
 
 RUN apk add build-base=0.5-r3 --no-cache && \
     bundle config set --local deployment 'true' && \
