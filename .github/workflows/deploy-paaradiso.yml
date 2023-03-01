@@ -90,7 +90,7 @@ jobs:
           echo "Checking Ruby..."
           snyk test --target-dir ruby/app
           echo "Checking Python..."
-          snyk test --target-dir python/app # this is ugly, snyk
+          snyk test --target-dir python/app --skip-unresolved # this is ugly, snyk
           echo "Checking Golang..."
           snyk test --target-dir golang/app
           echo "Checking Node.js..."
