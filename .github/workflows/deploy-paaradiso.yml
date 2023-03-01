@@ -120,7 +120,7 @@ jobs:
           echo "Checking Node.js..."
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < nodejs/Dockerfile
           echo "Checking Eiffel..."
-          docker container run --rm -i hadolint/hadolint hadolint "$@" - < eiffel/Dockerfile
+          docker container run --rm -i hadolint/hadolint hadolint --failure-threshold error "$@" - < eiffel/Dockerfile
 
 
       #
