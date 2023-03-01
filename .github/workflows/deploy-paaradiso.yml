@@ -12,8 +12,40 @@ jobs:
     strategy:
       matrix:
         applications:
-          - name: ruby
+          - language: ruby
+            application: ruby/app
             build-flags: --build-arg RUBY_ARCHITECTURE=linux
+            dockerfile: ruby/Dockerfile
+            image: salizzar/thall-ruby:latest
+            has_snyk_support: true
+
+          - language: python
+            application: python/app
+            build-flags: ''
+            dockerfile: python/Dockerfile
+            image: salizzar/thall-python:latest
+            has_snyk_support: true
+
+          - language: nodejs
+            application: nodejs/app
+            build-flags: ''
+            dockerfile: nodejs/Dockerfile
+            image: salizzar/thall-nodejs:latest
+            has_snyk_support: true
+
+          - language: golang
+            application: golang/app
+            build-flags: ''
+            dockerfile: golang/Dockerfile
+            image: salizzar/thall-golang:latest
+            has_snyk_support: true
+
+          - language: eiffel
+            application: eiffel/app
+            build-flags: ''
+            dockerfile: eiffel/Dockerfile
+            image: salizzar/thall-eiffel:latest
+            has_snyk_support: false
 
     steps:
       - uses: actions/checkout@v2
@@ -69,17 +101,24 @@ jobs:
           }
           cp version.json ruby/app python/app
 
-      - name: Use hadolint to sanitize Dockerfiles
+      - name: Pull hadolint image
         run: |
           docker pull hadolint/hadolint
-          echo "Checking Ruby..."
-          docker container run --rm -i hadolint/hadolint hadolint "$@" - < ruby/Dockerfile
-          echo "Checking Python..."
-          docker container run --rm -i hadolint/hadolint hadolint "$@" - < python/Dockerfile
-          echo "Checking Golang..."
-          docker container run --rm -i hadolint/hadolint hadolint "$@" - < golang/Dockerfile
-          echo "Checking Node.js..."
-          docker container run --rm -i hadolint/hadolint hadolint "$@" - < nodejs/Dockerfile
+
+      - name: Use hadolint to sanitize Dockerfiles
+        run: |
+          echo "Checking ${{ app.language }}..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < ${{ app.dockerfile }}
+          # echo "Checking Python..."
+          # docker container run --rm -i hadolint/hadolint hadolint "$@" - <
+          # echo "Checking Golang..."
+          # docker container run --rm -i hadolint/hadolint hadolint "$@" - < golang/Dockerfile
+          # echo "Checking Node.js..."
+          # docker container run --rm -i hadolint/hadolint hadolint "$@" - < nodejs/Dockerfile
+          # echo "Checking Eiffel..."
+          # docker container run --rm -i hadolint/hadolint hadolint "$@" - < eiffel/Dockerfile
+        with:
+          app: ${{ matrix.applications }}
 
       - name: Run Snyk to check vulnerabilities in all projects
         env:
@@ -142,4 +181,8 @@ jobs:
           tags: salizzar/thall-eiffel:latest
           push: true
 
+      - name: Run Snyk again to check vulnerabilities in Dockerfiles
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: snyk/actions/docker@master
 
