@@ -101,6 +101,10 @@ jobs:
           }
           cp version.json ruby/app python/app
 
+
+      #
+      # hadolint
+      #
       - name: Pull hadolint image
         run: |
           docker pull hadolint/hadolint
@@ -109,17 +113,14 @@ jobs:
         run: |
           echo "Checking ${{ language }}..."
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < ${{ dockerfile }}
-          # echo "Checking Python..."
-          # docker container run --rm -i hadolint/hadolint hadolint "$@" - <
-          # echo "Checking Golang..."
-          # docker container run --rm -i hadolint/hadolint hadolint "$@" - < golang/Dockerfile
-          # echo "Checking Node.js..."
-          # docker container run --rm -i hadolint/hadolint hadolint "$@" - < nodejs/Dockerfile
-          # echo "Checking Eiffel..."
-          # docker container run --rm -i hadolint/hadolint hadolint "$@" - < eiffel/Dockerfile
-        with:
-          language: ${{ matrix.applications.language }}
-          dockerfile: ${{ matrix.applications.dockerfile }}
+          echo "Checking Python..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - <
+          echo "Checking Golang..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < golang/Dockerfile
+          echo "Checking Node.js..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < nodejs/Dockerfile
+          echo "Checking Eiffel..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < eiffel/Dockerfile
 
       - name: Run Snyk to check vulnerabilities in all projects
         env:
@@ -139,6 +140,54 @@ jobs:
           # echo "Checking Eiffel..."
           # snyk test --target-dir eiffel
 
+
+      #
+      # snyk
+      #
+      - name: Run Snyk again to check vulnerabilities in Ruby Docker image
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: snyk/actions/docker@master
+        with:
+          image: salizzar/thall-ruby:latest
+          args: --file=ruby/Dockerfile
+
+      - name: Run Snyk again to check vulnerabilities in Python Docker image
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: snyk/actions/docker@master
+        with:
+          image: salizzar/thall-python:latest
+          args: --file=python/Dockerfile
+
+      - name: Run Snyk again to check vulnerabilities in Golang Docker image
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: snyk/actions/docker@master
+        with:
+          image: salizzar/thall-golang:latest
+          args: --file=golang/Dockerfile
+
+      - name: Run Snyk again to check vulnerabilities in Nodejs Docker image
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: snyk/actions/docker@master
+        with:
+          image: salizzar/thall-nodejs:latest
+          args: --file=nodejs/Dockerfile
+
+      - name: Run Snyk again to check vulnerabilities in Eiffel Docker image
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: snyk/actions/docker@master
+        with:
+          image: salizzar/thall-eiffel:latest
+          args: --file=eiffel/Dockerfile
+
+
+      #
+      # dockerhub
+      #
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
@@ -181,9 +230,4 @@ jobs:
           context: ./eiffel
           tags: salizzar/thall-eiffel:latest
           push: true
-
-      - name: Run Snyk again to check vulnerabilities in Dockerfiles
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        uses: snyk/actions/docker@master
 
