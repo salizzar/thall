@@ -107,8 +107,8 @@ jobs:
 
       - name: Use hadolint to sanitize Dockerfiles
         run: |
-          echo "Checking ${{ app.language }}..."
-          docker container run --rm -i hadolint/hadolint hadolint "$@" - < ${{ app.dockerfile }}
+          echo "Checking ${{ language }}..."
+          docker container run --rm -i hadolint/hadolint hadolint "$@" - < ${{ dockerfile }}
           # echo "Checking Python..."
           # docker container run --rm -i hadolint/hadolint hadolint "$@" - <
           # echo "Checking Golang..."
@@ -118,7 +118,8 @@ jobs:
           # echo "Checking Eiffel..."
           # docker container run --rm -i hadolint/hadolint hadolint "$@" - < eiffel/Dockerfile
         with:
-          app: ${{ matrix.applications }}
+          language: ${{ matrix.applications.language }}
+          dockerfile: ${{ matrix.applications.dockerfile }}
 
       - name: Run Snyk to check vulnerabilities in all projects
         env:
