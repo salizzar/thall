@@ -1,4 +1,5 @@
-FROM eiffel/eiffel:21.11
+# TODO: use multistage build instead of
+FROM eiffel/eiffel:22.12
 
 
 EXPOSE 8000
