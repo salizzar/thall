@@ -30,7 +30,7 @@ ENV EWF_STABLE_VERSION=v1.1.1
 
 WORKDIR /app
 COPY app /app/app
-ADD app.ecf /app
+COPY app.ecf /app
 
 RUN git clone https://github.com/EiffelWebFramework/EWF.git ${ISE_LIBRARY_PROJECTS}/EWF && \
     cd ${ISE_LIBRARY_PROJECTS}/EWF && git reset --hard ${EWF_STABLE_VERSION} && \
@@ -44,11 +44,11 @@ RUN git clone https://github.com/EiffelWebFramework/EWF.git ${ISE_LIBRARY_PROJEC
 # came back to root to add / remove all unnecessary stuff
 USER root
 
-ADD etc/nginx/conf.d/app.conf /etc/nginx/conf.d/
-ADD etc/nginx/nginx.conf /etc/nginx/
-ADD etc/init.d/nginx /etc/init.d/
-ADD etc/init.d/app /etc/init.d/
-ADD usr/bin/start /usr/bin/
+COPY etc/nginx/conf.d/app.conf /etc/nginx/conf.d/
+COPY etc/nginx/nginx.conf /etc/nginx/
+COPY etc/init.d/nginx /etc/init.d/
+COPY etc/init.d/app /etc/init.d/
+COPY usr/bin/start /usr/bin/
 
 RUN apt-get remove -y ${DEV_REQUIRED_PACKAGES} && \
     apt-get autoremove --purge --yes && \
