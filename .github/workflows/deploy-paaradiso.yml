@@ -9,43 +9,43 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: ci-${{ github.ref }}
-    strategy:
-      matrix:
-        applications:
-          - language: ruby
-            application: ruby/app
-            build-flags: --build-arg RUBY_ARCHITECTURE=linux
-            dockerfile: ruby/Dockerfile
-            image: salizzar/thall-ruby:latest
-            has_snyk_support: true
+    #strategy:
+    #  matrix:
+    #    applications:
+    #      - language: ruby
+    #        application: ruby/app
+    #        build-flags: --build-arg RUBY_ARCHITECTURE=linux
+    #        dockerfile: ruby/Dockerfile
+    #        image: salizzar/thall-ruby:latest
+    #        has_snyk_support: true
 
-          - language: python
-            application: python/app
-            build-flags: ''
-            dockerfile: python/Dockerfile
-            image: salizzar/thall-python:latest
-            has_snyk_support: true
+    #      - language: python
+    #        application: python/app
+    #        build-flags: ''
+    #        dockerfile: python/Dockerfile
+    #        image: salizzar/thall-python:latest
+    #        has_snyk_support: true
 
-          - language: nodejs
-            application: nodejs/app
-            build-flags: ''
-            dockerfile: nodejs/Dockerfile
-            image: salizzar/thall-nodejs:latest
-            has_snyk_support: true
+    #      - language: nodejs
+    #        application: nodejs/app
+    #        build-flags: ''
+    #        dockerfile: nodejs/Dockerfile
+    #        image: salizzar/thall-nodejs:latest
+    #        has_snyk_support: true
 
-          - language: golang
-            application: golang/app
-            build-flags: ''
-            dockerfile: golang/Dockerfile
-            image: salizzar/thall-golang:latest
-            has_snyk_support: true
+    #      - language: golang
+    #        application: golang/app
+    #        build-flags: ''
+    #        dockerfile: golang/Dockerfile
+    #        image: salizzar/thall-golang:latest
+    #        has_snyk_support: true
 
-          - language: eiffel
-            application: eiffel/app
-            build-flags: ''
-            dockerfile: eiffel/Dockerfile
-            image: salizzar/thall-eiffel:latest
-            has_snyk_support: false
+    #      - language: eiffel
+    #        application: eiffel/app
+    #        build-flags: ''
+    #        dockerfile: eiffel/Dockerfile
+    #        image: salizzar/thall-eiffel:latest
+    #        has_snyk_support: false
 
     steps:
       - uses: actions/checkout@v2
