@@ -88,13 +88,13 @@ jobs:
           echo "Authenticating into snyk..."
           snyk auth ${SNYK_TOKEN}
           echo "Checking Ruby..."
-          snyk test --target-dir ruby
+          snyk test --target-dir ruby/app
           echo "Checking Python..."
-          snyk test --target-dir python
+          snyk test --target-dir python/app # this is ugly, snyk
           echo "Checking Golang..."
           snyk test --target-dir golang/app
           echo "Checking Node.js..."
-          snyk test --target-dir nodejs
+          snyk test --target-dir nodejs/app
           echo "Checking Eiffel..."
           snyk test --target-dir eiffel
 
