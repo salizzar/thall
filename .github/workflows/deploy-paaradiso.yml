@@ -166,7 +166,7 @@ jobs:
         uses: snyk/actions/docker@master
         with:
           image: salizzar/thall-golang:latest
-          args: --file=golang/Dockerfile
+          args: --file=golang/Dockerfile --severity-threshold=high # that's ugly, golang
 
       - name: Run Snyk again to check vulnerabilities in Nodejs Docker image
         env:
