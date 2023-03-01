@@ -95,8 +95,9 @@ jobs:
           snyk test --target-dir golang/app
           echo "Checking Node.js..."
           snyk test --target-dir nodejs/app
-          echo "Checking Eiffel..."
-          snyk test --target-dir eiffel
+          # FIXME: Eiffel is not supported
+          # echo "Checking Eiffel..."
+          # snyk test --target-dir eiffel
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
