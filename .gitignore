@@ -1,4 +1,5 @@
-golang/app/fibonacci
+golang/app/app
+rust/app/target
 eiffel/EIFGENs
 Dockerfile.bkp
 tmp
