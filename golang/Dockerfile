@@ -10,7 +10,7 @@ RUN go get thall-golang && \
     go build -v -o /out/app ./...
 
 
-FROM busybox
+FROM busybox:latest
 EXPOSE 8000
 WORKDIR /app
 

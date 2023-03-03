@@ -8,7 +8,7 @@ RUN apk add libc-dev && \
     cargo install --path .
 
 
-FROM busybox
+FROM busybox:latest
 
 ENV ROCKET_ADDRESS=0.0.0.0
 EXPOSE 8000
