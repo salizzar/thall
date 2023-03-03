@@ -47,6 +47,14 @@ jobs:
     #        image: salizzar/thall-eiffel:latest
     #        has_snyk_support: false
 
+    #      - language: rust
+    #        application: rust/app
+    #        build-flags: ''
+    #        dockerfile: rust/Dockerfile
+    #        image: salizzar/thall-rust:latest
+    #        has_snyk_support: true
+
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -56,6 +64,7 @@ jobs:
         run: |
           yarn global add snyk
           echo "aws: `aws --version`"
+          echo "snyk: `snyk --version`"
           echo "jq: `jq --version`"
           echo "node: `node --version`"
           echo "npm: `npm --version`"
@@ -63,7 +72,7 @@ jobs:
           echo "ruby: `ruby --version`"
           echo "python: `python --version`"
           echo "golang: `go version`"
-          echo "snyk : `snyk --version`"
+          echo "rust: `rustc --version`"
 
       - name: Get short SHA and tag
         id: get-short-sha-and-tag
@@ -121,6 +130,8 @@ jobs:
           docker container run --rm -i hadolint/hadolint hadolint "$@" - < nodejs/Dockerfile
           echo "Checking Eiffel..."
           docker container run --rm -i hadolint/hadolint hadolint --failure-threshold error "$@" - < eiffel/Dockerfile
+          echo "Checking Rust..."
+          docker container run --rm -i hadolint/hadolint hadolint --failure-threshold error "$@" - < rust/Dockerfile
 
 
       #
@@ -143,6 +154,8 @@ jobs:
           # FIXME: Eiffel is not supported
           # echo "Checking Eiffel..."
           # snyk test --target-dir eiffel
+          echo "Checking Rust..."
+          snyk test --target-dir rust/app
 
       - name: Run Snyk again to check vulnerabilities in Ruby Docker image
         env:
@@ -185,6 +198,15 @@ jobs:
         with:
           image: salizzar/thall-eiffel:latest
           args: --file=eiffel/Dockerfile
+
+      - name: Run Snyk again to check vulnerabilities in Rust Docker image
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: snyk/actions/docker@master
+        continue-on-error: true
+        with:
+          image: salizzar/thall-rust:latest
+          args: --file=rust/Dockerfile
 
 
       #
@@ -231,5 +253,12 @@ jobs:
         with:
           context: ./eiffel
           tags: salizzar/thall-eiffel:latest
+          push: true
+
+      - name: Build and push Rust image to DockerHub
+        uses: docker/build-push-action@v3
+        with:
+          context: ./rust
+          tags: salizzar/thall-rust:latest
           push: true
 
