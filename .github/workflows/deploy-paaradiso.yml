@@ -154,8 +154,9 @@ jobs:
           # FIXME: Eiffel is not supported
           # echo "Checking Eiffel..."
           # snyk test --target-dir eiffel
-          echo "Checking Rust..."
-          snyk test --target-dir rust/app
+          # FIXME: Rust is not supported
+          # echo "Checking Rust..."
+          # snyk test --target-dir rust/app
 
       - name: Run Snyk again to check vulnerabilities in Ruby Docker image
         env:
