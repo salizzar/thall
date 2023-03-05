@@ -3,3 +3,5 @@ rust/app/target
 eiffel/EIFGENs
 Dockerfile.bkp
 tmp
+_build
+deps

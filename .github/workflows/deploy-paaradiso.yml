@@ -52,7 +52,15 @@ jobs:
     #        build-flags: ''
     #        dockerfile: rust/Dockerfile
     #        image: salizzar/thall-rust:latest
+    #        has_snyk_support: false
+
+    #      - language: elixir
+    #        application: elixir/app
+    #        build-flags: ''
+    #        dockerfile: elixir/Dockerfile
+    #        image: salizzar/thall-elixir:latest
     #        has_snyk_support: true
+
 
 
     steps:
@@ -73,6 +81,7 @@ jobs:
           echo "python: `python --version`"
           echo "golang: `go version`"
           echo "rust: `rustc --version`"
+          echo "elixir: `elixir --version`"
 
       - name: Get short SHA and tag
         id: get-short-sha-and-tag
@@ -157,6 +166,8 @@ jobs:
           # FIXME: Rust is not supported
           # echo "Checking Rust..."
           # snyk test --target-dir rust/app
+          echo "Checking Rust..."
+          snyk test --target-dir elixir/app
 
       - name: Run Snyk again to check vulnerabilities in Ruby Docker image
         env:
@@ -204,10 +215,17 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         uses: snyk/actions/docker@master
-        continue-on-error: true
         with:
           image: salizzar/thall-rust:latest
           args: --file=rust/Dockerfile
+
+      - name: Run Snyk again to check vulnerabilities in Elixir Docker image
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        uses: snyk/actions/docker@master
+        with:
+          image: salizzar/thall-elixir:latest
+          args: --file=elixir/Dockerfile
 
 
       #
@@ -261,5 +279,12 @@ jobs:
         with:
           context: ./rust
           tags: salizzar/thall-rust:latest
+          push: true
+
+      - name: Build and push Elixir image to DockerHub
+        uses: docker/build-push-action@v3
+        with:
+          context: ./rust
+          tags: salizzar/thall-elixir:latest
           push: true
 
