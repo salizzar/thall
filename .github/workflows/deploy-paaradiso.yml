@@ -62,7 +62,6 @@ jobs:
     #        has_snyk_support: true
 
 
-
     steps:
       - uses: actions/checkout@v2
         with:
@@ -141,6 +140,8 @@ jobs:
           docker container run --rm -i hadolint/hadolint hadolint --failure-threshold error "$@" - < eiffel/Dockerfile
           echo "Checking Rust..."
           docker container run --rm -i hadolint/hadolint hadolint --failure-threshold error "$@" - < rust/Dockerfile
+          echo "Checking Elixir..."
+          docker container run --rm -i hadolint/hadolint hadolint --failure-threshold error "$@" - < elixir/Dockerfile
 
 
       #
@@ -166,7 +167,7 @@ jobs:
           # FIXME: Rust is not supported
           # echo "Checking Rust..."
           # snyk test --target-dir rust/app
-          echo "Checking Rust..."
+          echo "Checking Elixir..."
           snyk test --target-dir elixir/app
 
       - name: Run Snyk again to check vulnerabilities in Ruby Docker image
