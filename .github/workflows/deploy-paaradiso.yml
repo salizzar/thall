@@ -168,7 +168,7 @@ jobs:
           # echo "Checking Rust..."
           # snyk test --target-dir rust/app
           echo "Checking Elixir..."
-          snyk test --target-dir elixir/app
+          snyk test --target-dir elixir/app/lib
 
       - name: Run Snyk again to check vulnerabilities in Ruby Docker image
         env:
