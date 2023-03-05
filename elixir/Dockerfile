@@ -2,7 +2,7 @@ FROM elixir:1.14.3
 
 WORKDIR /app
 
-COPY app/mix.exs app/mix.lock /app
+COPY app/mix.exs app/mix.lock /app/
 COPY app/config /app/config
 COPY app/lib /app/lib
 
