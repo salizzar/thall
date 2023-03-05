@@ -167,8 +167,9 @@ jobs:
           # FIXME: Rust is not supported
           # echo "Checking Rust..."
           # snyk test --target-dir rust/app
-          echo "Checking Elixir..."
-          snyk test --target-dir elixir/app/lib
+          # TODO: install Elixir and compile it before check
+          # echo "Checking Elixir..."
+          # snyk test --target-dir elixir/app
 
       - name: Run Snyk again to check vulnerabilities in Ruby Docker image
         env:
