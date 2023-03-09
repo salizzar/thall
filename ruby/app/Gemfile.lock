@@ -9,7 +9,7 @@ GEM
     nio4r (2.5.8)
     puma (6.1.1)
       nio4r (~> 2.0)
-    rack (3.0.4.1)
+    rack (3.0.4.2)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rspec (3.12.0)
@@ -28,14 +28,14 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
-  x86_64-linux-musl
+  ruby
 
 DEPENDENCIES
   cuba (~> 4.0, >= 4.0.1)
   json (~> 2.6, >= 2.6.3)
   puma (~> 6.1, >= 6.1.1)
-  rack (~> 3.0, >= 3.0.4)
+  rack (~> 3.0, >= 3.0.4.2)
   rspec (~> 3.12)
 
 BUNDLED WITH
-   2.3.7
+   2.4.6
