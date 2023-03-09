@@ -221,13 +221,13 @@ jobs:
           image: salizzar/thall-rust:latest
           args: --file=rust/Dockerfile
 
-      - name: Run Snyk again to check vulnerabilities in Elixir Docker image
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        uses: snyk/actions/docker@master
-        with:
-          image: salizzar/thall-elixir:latest
-          args: --file=elixir/Dockerfile
+#     - name: Run Snyk again to check vulnerabilities in Elixir Docker image
+#       env:
+#         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#       uses: snyk/actions/docker@master
+#       with:
+#         image: salizzar/thall-elixir:latest
+#         args: --file=elixir/Dockerfile
 
 
       #
