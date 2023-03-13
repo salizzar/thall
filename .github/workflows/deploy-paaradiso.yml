@@ -81,6 +81,7 @@ jobs:
           echo "golang: `go version`"
           echo "rust: `rustc --version`"
           echo "elixir: `elixir --version`"
+          echo "docker-compose: `docker-compose --version`"
 
       - name: Get short SHA and tag
         id: get-short-sha-and-tag
@@ -117,6 +118,15 @@ jobs:
             "branch": "${{ steps.get-current.outputs.branch }}"
           }
           cp version.json ruby/app python/app
+
+
+      #
+      # docker-compose
+      #
+
+      - name: build all images with Docker Compose
+        run: |
+          docker-compose build
 
 
       #

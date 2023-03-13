@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  ruby:
+    build: ruby
+    image: salizzar/thall-ruby
+    ports:
+      - 8000:8000
+
+  python:
+    build: python
+    image: salizzar/thall-python
+    ports:
+      - 8001:8000
+
+  nodejs:
+    build: nodejs
+    image: salizzar/thall-nodejs
+    ports:
+      - 8002:8000
+
+  golang:
+    build: golang
+    image: salizzar/thall-golang
+    ports:
+      - 8003:8000
+
+  eiffel:
+    build: eiffel
+    image: salizzar/thall-eiffel
+    ports:
+      - 8004:8000
+
+  rust:
+    build: rust
+    image: salizzar/thall-rust
+    ports:
+      - 8005:8000
+
+  elixir:
+    build: elixir
+    image: salizzar/thall-elixir
+    ports:
+      - 8006:8000
