@@ -15,4 +15,4 @@ RUN apk add build-base=0.5-r3 --no-cache && \
     apk del build-base && \
     rm -rf /var/cache/apk/*
 
-CMD ["bundle", "exec", "puma", "--environment", "production", "--port", "8000", "--log-requests", "./app/cuba.rb"]
+CMD ["bundle", "exec", "puma", "--environment", "production", "--port", "8000", "--log-requests", "-C", "cuba.rb"]

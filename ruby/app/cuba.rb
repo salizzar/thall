@@ -1,14 +1,11 @@
 # app
+
 require 'cuba'
 require 'cuba/safe'
 require 'json'
 
 # classes
 require_relative 'fibonacci_generator'
-
-
-Cuba.use(Rack::Session::Cookie, :secret => 'ablublue')
-Cuba.plugin(Cuba::Safe)
 
 
 Cuba.define do
@@ -38,10 +35,8 @@ curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm
         fibonacci = FibonacciGenerator.new(index)
 
         answer = {
-          fibonacci: {
-            number: index,
-            result: fibonacci.calculate
-          }
+          number: index,
+          result: fibonacci.calculate
         }
 
         res.write "#{JSON.dump(answer)}\n"
