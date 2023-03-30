@@ -1,4 +1,4 @@
-FROM node:19.6.1-alpine
+FROM node:19-alpine
 
 EXPOSE 8000
 
