@@ -1,44 +1,79 @@
 version: '3'
 
+networks:
+  thall: {}
+
 services:
+  nginx:
+    image: nginx:1.23.4-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/etc/nginx/conf.d:/etc/nginx/conf.d
+    links:
+      - ruby
+      - python
+      - nodejs
+      - golang
+      - eiffel
+      - rust
+      - elixir
+    networks:
+      - thall
+
   ruby:
     build: ruby
     image: salizzar/thall-ruby
     ports:
       - 8000:8000
+    networks:
+      - thall
 
   python:
     build: python
     image: salizzar/thall-python
     ports:
       - 8001:8000
+    networks:
+      - thall
 
   nodejs:
     build: nodejs
     image: salizzar/thall-nodejs
     ports:
       - 8002:8000
+    networks:
+      - thall
 
   golang:
     build: golang
     image: salizzar/thall-golang
     ports:
       - 8003:8000
+    networks:
+      - thall
 
   eiffel:
     build: eiffel
     image: salizzar/thall-eiffel
     ports:
       - 8004:8000
+    networks:
+      - thall
 
   rust:
     build: rust
     image: salizzar/thall-rust
     ports:
       - 8005:8000
+    networks:
+      - thall
 
   elixir:
     build: elixir
     image: salizzar/thall-elixir
     ports:
       - 8006:8000
+    networks:
+      - thall
+
