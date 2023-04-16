@@ -18,11 +18,13 @@ Cuba.define do
       protocol = env['rack.url_scheme']
       host = env['SERVER_NAME']
       port = env['SERVER_PORT']
+      host_port = port.to_i == 80 ? host : "#{host}:#{port}"
+      fragment = "fibonacci"
 
       res.write %{
 Hey dude, do you want to know some Fibonacci numbers? Send a post to /fibonacci here with the following payload:
 
-curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm>>' #{protocol}://#{host}:#{port}/fibonacci
+curl -XPOST -d 'number=<<some number you want to know in the Fibonacci algorithm>>' #{protocol}://#{host_port}/#{fragment}
 
 %}
     end
