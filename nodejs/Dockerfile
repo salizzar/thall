@@ -9,4 +9,4 @@ COPY app /app
 RUN yarn install && \
     yarn cache clean
 
-CMD ["node", "main.js"]
+CMD ["node", "src/main.js"]

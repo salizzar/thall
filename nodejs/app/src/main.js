@@ -11,7 +11,7 @@ const fibonacciGenerator = (index) =>
 
 
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(morgan('combined'))
+app.use(morgan('prod'))
 
 
 app.get('/', (req, res) => {
