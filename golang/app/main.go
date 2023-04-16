@@ -25,7 +25,14 @@ func main() {
 		host_in_bytes := c.Request.Host
 		host_with_port := strings.Split(host_in_bytes, ":")
 		host := host_with_port[0]
-		port := host_with_port[1]
+
+		var port int
+
+		if len(host_with_port) < 2 {
+			port = 80
+		} else {
+			port, _ = strconv.Atoi(host_with_port[1])
+		}
 
 		c.HTML(http.StatusOK, "main.tmpl", gin.H{"scheme": scheme, "host": host, "port": port})
 	})
