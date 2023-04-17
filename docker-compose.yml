@@ -26,6 +26,8 @@ services:
     image: salizzar/thall-ruby
     ports:
       - 8000:8000
+    volumes:
+      - ./ruby/app/src:/app/src
     networks:
       - thall
 
@@ -42,6 +44,8 @@ services:
     image: salizzar/thall-nodejs
     ports:
       - 8002:8000
+    volumes:
+      - ./nodejs/app/src:/app/src
     networks:
       - thall
 
