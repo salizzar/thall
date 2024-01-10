@@ -1,4 +1,4 @@
-FROM ruby:3.2.1-alpine
+FROM ruby:3.3-alpine
 
 ARG RUBY_ARCHITECTURE=aarch64-linux-musl
 EXPOSE 8000
