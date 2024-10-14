@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "body-parser": "^1.20.0",
-    "express": "^4.18.1",
+    "express": "^4.21.1",
     "yarn": "^1.22.19",
     "morgan": "^1.10.0"
   },
